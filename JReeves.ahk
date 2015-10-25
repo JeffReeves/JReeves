@@ -126,24 +126,24 @@ ButtonOK:
 
 #Up:: ; increases transparency
   WinGet, active_id, ID, A
-  if not(transValue) {
-    transValue := 255
+  if not(transValue%active_id%) {
+    transValue%active_id% := 255
   }
   else {
-    transValue += 10
-    WinSet, Transparent, %transValue%, A
+    transValue%active_id% += 10
+    WinSet, Transparent, % transValue%active_id%, A
   }
   Return
 
 
 #Down:: ; decreases transparency
   WinGet, active_id, ID, A
-  if not(transValue) {
-    transValue := 255
+  if not(transValue%active_id%) {
+    transValue%active_id% := 255
   }
   else {
-    transValue -= 10
-    WinSet, Transparent, %transValue%, A
+    transValue%active_id% -= 10
+    WinSet, Transparent, % transValue%active_id%, A
   }
   Return
 
