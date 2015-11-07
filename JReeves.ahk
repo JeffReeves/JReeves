@@ -148,6 +148,24 @@ ButtonOK:
   Return
 
 
+#c:: ; toggles always on top, click through, and removes title bar
+  WinGet, active_id, ID, A
+  if not(toggle%active_id%) {
+    
+    Winset, Alwaysontop, , A
+    WinSet, Style, -0xC40000, A
+    WinSet, ExStyle, +0x20, A
+    toggle%active_id% = 1
+  }
+  else {
+    Winset, Alwaysontop, , A
+    WinSet, Style, +0xC40000, A
+    WinSet, ExStyle, -0x20, A
+    toggle%active_id% = 0
+  }
+  Return
+
+
 #LButton:: ; copies the hex color under the cursor
   MouseGetPos, MouseX, MouseY
   PixelGetColor, pColor, %MouseX%, %MouseY%, RGB
