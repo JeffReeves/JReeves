@@ -29,14 +29,14 @@ wcMain := new WinClip
 
 ; VOLUME CONTROL ---------------------------------------------------|
 
-
-#If MouseIsOver("ahk_class Shell_TrayWnd") ;if over taskbar
-  WheelUp::Send {Volume_Up}
-  WheelDown::Send {Volume_Down}
+; control volume with mouse wheel when hovering over the taskbar
+#If MouseIsOver("ahk_class Shell_TrayWnd")
+    WheelUp::Send {Volume_Up}
+    WheelDown::Send {Volume_Down}
 
 MouseIsOver(WinTitle) {
-  MouseGetPos,,, Win
-  Return WinExist(WinTitle . " ahk_id " . Win)
+    MouseGetPos,,, Win
+    Return WinExist(WinTitle . " ahk_id " . Win)
 }
 
 
@@ -45,134 +45,140 @@ MouseIsOver(WinTitle) {
 #If
 
 Break::
-  SendInput, %fulltarget%
-  Return
+    SendInput, %fulltarget%
+    Return
 
 ScrollLock::
-  SendInput, %semitarget%
-  Return
+    SendInput, %semitarget%
+    Return
 
 
 ; CLIPBOARD OPERATIONS ---------------------------------------------|
 
+; copy
+~LControl & LButton:: 
+    SendInput ^c
+    Return
 
-~LControl & LButton:: ; copy
-  SendInput ^c
-  Return
+; paste parsed HTML
+~LControl & MButton:: 
+    wcMain.SetHTML(clipboard)
+    wcMain.Paste()
+    Return
 
-~LControl & MButton:: ; paste parsed HTML
-  wcMain.SetHTML(clipboard)
-  wcMain.Paste()
-  Return
+; paste
+~LControl & RButton:: 
+    SendInput ^v
+    Return
 
-~LControl & RButton:: ; paste
-  SendInput ^v
-  Return
+; convert text to "Capitalized Case"
+~LControl & Left:: 
+    StringUpper, clipboard, clipboard, T
+    SendInput ^v
+    Return
 
-~LControl & Left:: ; convert text to "Capitalized Case"
-  StringUpper, clipboard, clipboard, T
-  SendInput ^v
-  Return
+; convert text to UPPERCASE
+~LControl & Up:: 
+    StringUpper, clipboard, clipboard
+    SendInput ^v
+    Return
 
-~LControl & Up:: ; convert text to UPPERCASE
-  StringUpper, clipboard, clipboard
-  SendInput ^v
-  Return
+; convert text to lowercase
+~LControl & Down:: 
+    StringLower, clipboard, clipboard
+    SendInput ^v
+    Return
 
-~LControl & Down:: ; convert text to lowercase
-  StringLower, clipboard, clipboard
-  SendInput ^v
-  Return
+; convert text to HTML entities
+~LControl & Right:: 
+    ;Transform, clipboard, HTML, %clipboard%
+    StringReplace, htmlEntities, clipboard, <, &lt;, All
+    StringReplace, clipboard, htmlEntities, >, &gt;, All
+    SendInput ^v
+    Return
 
-~LControl & Right:: ; convert text to HTML entities
-  ;Transform, clipboard, HTML, %clipboard%
-  StringReplace, htmlEntities, clipboard, <, &lt;, All
-  StringReplace, clipboard, htmlEntities, >, &gt;, All
-  SendInput ^v
-  Return
-
-AppsKey:: ; wrap selected text with desired HTML tags
-  SendInput ^c
-  Gui, Destroy
-  Gui, Add, Text, w200, Wrap HTML:
-  Gui, Add, Edit, w300 vHTMLTag
-  Gui, Add, Button, w75 Default, OK
-  MouseGetPos, MouseX, MouseY
-  Gui, Show, x%MouseX% y%MouseY% w320 h90, Wrap HTML
-  Return
+; wrap selected text with desired HTML tags
+AppsKey:: 
+    SendInput ^c
+    Gui, Destroy
+    Gui, Add, Text, w200, Wrap HTML:
+    Gui, Add, Edit, w300 vHTMLTag
+    Gui, Add, Button, w75 Default, OK
+    MouseGetPos, MouseX, MouseY
+    Gui, Show, x%MouseX% y%MouseY% w320 h90, Wrap HTML
+    Return
 
 GuiClose:
-  Gui, Destroy
-  Return
+    Gui, Destroy
+    Return
 
 ButtonOK:
-  Gui, Submit
-  textToWrap = %clipboard%
-  TaggedText = <%HTMLTag%>%textToWrap%</%HTMLTag%>
-  clipboard := TaggedText
-  SendInput ^v
-  TaggedText =
-  textToWrap =
-  return
+    Gui, Submit
+    textToWrap = %clipboard%
+    TaggedText = <%HTMLTag%>%textToWrap%</%HTMLTag%>
+    clipboard := TaggedText
+    SendInput ^v
+    TaggedText =
+    textToWrap =
+    return
 
 
 ; WINDOW OPERATIONS ------------------------------------------------|
 
-
-#a:: ; sets window to always be on top
-  Winset, Alwaysontop, , A
-  Return
-
-
-#Up:: ; increases transparency
-  WinGet, active_id, ID, A
-  if not(transValue%active_id%) {
-    transValue%active_id% := 255
-  }
-  else {
-    transValue%active_id% += 10
-    WinSet, Transparent, % transValue%active_id%, A
-  }
-  Return
-
-
-#Down:: ; decreases transparency
-  WinGet, active_id, ID, A
-  if not(transValue%active_id%) {
-    transValue%active_id% := 255
-  }
-  else {
-    transValue%active_id% -= 10
-    WinSet, Transparent, % transValue%active_id%, A
-  }
-  Return
-
-
-#c:: ; toggles always on top, click through, and removes title bar
-  WinGet, active_id, ID, A
-  if not(toggle%active_id%) {
-    
+; sets window to always be on top
+#a:: 
     Winset, Alwaysontop, , A
-    WinSet, Style, -0xC40000, A
-    WinSet, ExStyle, +0x20, A
-    toggle%active_id% = 1
-  }
-  else {
-    Winset, Alwaysontop, , A
-    WinSet, Style, +0xC40000, A
-    WinSet, ExStyle, -0x20, A
-    toggle%active_id% = 0
-  }
-  Return
+    Return
 
+; increases transparency
+#Up:: 
+    WinGet, active_id, ID, A
+    if not(transValue%active_id%) {
+        transValue%active_id% := 255
+    }
+    else {
+        transValue%active_id% += 10
+        WinSet, Transparent, % transValue%active_id%, A
+    }
+    Return
 
-#LButton:: ; copies the hex color under the cursor
-  MouseGetPos, MouseX, MouseY
-  PixelGetColor, pColor, %MouseX%, %MouseY%, RGB
-  StringReplace, pColor, pColor, 0x, , All
-  clipboard := pColor
-  TrayTip, Copied Color, %pColor%, 1
-  Return
+; decreases transparency
+#Down:: 
+    WinGet, active_id, ID, A
+    if not(transValue%active_id%) {
+        transValue%active_id% := 255
+    }
+    else {
+        transValue%active_id% -= 10
+        WinSet, Transparent, % transValue%active_id%, A
+    }
+    Return
+
+; toggles always on top, click through, and removes title bar
+#c:: 
+    WinGet, active_id, ID, A
+    if not(toggle%active_id%) {
+        Winset, Alwaysontop, , A
+        WinSet, Style, -0xC40000, A
+        WinSet, ExStyle, +0x20, A
+        toggle%active_id% = 1
+    }
+    else {
+        Winset, Alwaysontop, , A
+        WinSet, Style, +0xC40000, A
+        WinSet, ExStyle, -0x20, A
+        toggle%active_id% = 0
+    }
+    Return
+
+; copies the hex color under the cursor
+#LButton:: 
+    MouseGetPos, MouseX, MouseY
+    PixelGetColor, pColor, %MouseX%, %MouseY%, RGB
+    StringReplace, pColor, pColor, 0x, , All
+    clipboard := pColor
+    TrayTip, Copied Color, %pColor%, 1
+    Return
 
 
 ; HOT STRINGS ------------------------------------------------------|
@@ -184,8 +190,33 @@ ButtonOK:
 ::--m::{Asc 0151}
 
 
+; FOLDER CREATION --------------------------------------------------|
+
+; create multiple folders based on clipboard content
+#f:: 
+    ; iterate over each line on the clipboard
+    Loop, parse, clipboard, `n, `r
+    {
+        line := A_LoopField
+        ; strip out characters that cannot be used in folder name
+        StringReplace, line, line, +, and, All
+        StringReplace, line, line, :, --, All
+        StringReplace, line, line, ?, , All
+        ; create a new folder
+        SendInput, ^+n
+        Sleep 20
+        ; name the folder
+        SendInput, %line%
+        Sleep 20
+        ; save the folder
+        SendInput, {Enter}
+        Sleep 20
+    }
+    Return
+
+
 ; RELOAD -----------------------------------------------------------|
 
 +Esc::
-  Reload
-  Return
+    Reload
+    Return
