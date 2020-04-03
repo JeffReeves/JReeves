@@ -52,6 +52,17 @@ ScrollLock::
     SendInput, %semitarget%
     Return
 
+; SCREENSHOTS ------------------------------------------------------|
+
+; snip to clipboard
+F6::
+    SendInput, +#s
+    Return
+
+; printscreen (handy for Greenshot)
+F7::
+    SendInput, {PrintScreen}
+    Return
 
 ; CLIPBOARD OPERATIONS ---------------------------------------------|
 
@@ -95,6 +106,10 @@ ScrollLock::
     StringReplace, htmlEntities, clipboard, <, &lt;, All
     StringReplace, clipboard, htmlEntities, >, &gt;, All
     SendInput ^v
+    Return
+
+~RAlt::
+    MouseClick, left
     Return
 
 ; wrap selected text with desired HTML tags
