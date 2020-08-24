@@ -203,6 +203,19 @@ ButtonOK:
 #Hotstring B * ?0 C1 C
 
 ::--m::{Asc 0151}
+::#=140::{#}==========================================================================================================================================
+::#=120::{#}======================================================================================================================
+::#=100::{#}==================================================================================================
+::#=80::{#}==============================================================================
+
+; Linux
+::date +::{Raw}date +%Y%b%d
+::free %::{Raw}MEM_TOTAL=$(free | grep 'Mem' | awk '{ print $2 }'); MEM_USED=$(free | grep 'Mem' | awk '{ print $3 }'); USED_PERCENT=$(bc <<< "scale=4; (${MEM_USED} / ${MEM_TOTAL}) * 100"); echo "Memory Used %: ${USED_PERCENT}"
+::free top10::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
+::tmux 4panel::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'C-l'\; send-keys -t top-right 'C-l'\; send-keys -t bottom-left 'C-l'\; send-keys -t bottom-right 'C-l'\; select-pane -U\; send-keys 'C-l'\;
+
+; homelab Linux
+::rm zone.::{Raw}find /share -type f -name "*Zone.Identifier" -print0 | xargs -i{} -0 rm -v {}
 
 
 ; FOLDER CREATION --------------------------------------------------|
