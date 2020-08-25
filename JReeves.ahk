@@ -215,6 +215,16 @@ ButtonOK:
 ::tmux4::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'C-l'\; send-keys -t top-right 'C-l'\; send-keys -t bottom-left 'C-l'\; send-keys -t bottom-right 'C-l'\; select-pane -U\; send-keys 'C-l'\;
 
 ; homelab Linux
+::ssh rtunnel::
+    SendInput, {Raw}ssh remoteUser@remoteHost -R 21919:localhost:22
+    SendInput, {Left 33}
+    Return 
+
+::scp rtunnel::
+    SendInput, {Raw}scp -P 21919 remotefile jeff@localhost:/tmp
+    SendInput, {Left 20}
+    Return 
+
 ::rm zone.::{Raw}find /share -type f -name "*Zone.Identifier" -print0 | xargs -i{} -0 rm -v {}
 ::tmuxrpis::{Raw}tmux -u new-session -s rpis \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
