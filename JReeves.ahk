@@ -218,6 +218,7 @@ ButtonOK:
 ::git log --::{Raw}git log --graph --all --decorate
 
 ; homelab Linux
+::sudo apt-get update &::{Raw}sudo apt-get update && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y
 ::ssh rtunnel::
     SendInput, {Raw}ssh remoteUser@remoteHost -R 21919:localhost:22
     SendInput, {Left 33}
