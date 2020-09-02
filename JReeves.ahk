@@ -218,6 +218,19 @@ ButtonOK:
 ::git log --::{Raw}git log --graph --all --decorate
 
 ; homelab Linux
+::add dvorak toggle.::
+    SendInput,`{Raw}
+(
+# toggle between Dvorak and QWERTY with Ctrl+Shift
+setxkbmap \
+    -model pc105 \
+    -layout 'us(dvorak),us' \
+    -option \
+    -option grp:ctrl_shift_toggle \
+    -option compose:rwin 
+)
+    Return
+
 ::sudo apt-get update &::{Raw}sudo apt-get update && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y
 ::ssh rtunnel::
     SendInput, {Raw}ssh remoteUser@remoteHost -R 21919:localhost:22
