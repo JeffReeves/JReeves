@@ -71,10 +71,9 @@ F7::
     SendInput ^c
     Return
 
-; paste parsed HTML
+; paste plain text
 ~LControl & MButton:: 
-    wcMain.SetHTML(clipboard)
-    wcMain.Paste()
+    SendInput, %clipboard%
     Return
 
 ; paste
@@ -100,12 +99,24 @@ F7::
     SendInput ^v
     Return
 
-; convert text to HTML entities
+; convert text to plain text
 ~LControl & Right:: 
+    clipboard = %clipboard%
+    SendInput ^v
+    Return
+
+; convert text to HTML entities
+~LControl & PgUp:: 
     ;Transform, clipboard, HTML, %clipboard%
     StringReplace, htmlEntities, clipboard, <, &lt;, All
     StringReplace, clipboard, htmlEntities, >, &gt;, All
     SendInput ^v
+    Return
+
+; paste parsed HTML
+~LControl & PgDn:: 
+    wcMain.SetHTML(clipboard)
+    wcMain.Paste()
     Return
 
 ; wrap selected text with desired HTML tags
