@@ -261,6 +261,7 @@ setxkbmap \
     Return 
 
 ::rm zone.::{Raw}find /share -type f -name "*Zone.Identifier" -print0 | xargs -i{} -0 rm -v {}
+::mkvtomp4.::{Raw}find ./ -maxdepth 1 -type f -name '*.mkv' -print0 | xargs -0 -I{} ffmpeg -i {} -codec copy $(echo "{}" | cut -f2 -d'.').mp4
 ::tmuxrpis::{Raw}tmux -u new-session -s rpis \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
 
