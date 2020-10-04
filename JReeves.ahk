@@ -220,9 +220,11 @@ ButtonOK:
 
 ; Linux
 ::date +::{Raw}date +%Y%b%d
-::free %::{Raw}MEM_TOTAL=$(free | grep 'Mem' | awk '{ print $2 }'); MEM_USED=$(free | grep 'Mem' | awk '{ print $3 }'); USED_PERCENT=$(bc <<< "scale=4; (${MEM_USED} / ${MEM_TOTAL}) * 100"); echo "Memory Used %: ${USED_PERCENT}"
-::free top10::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
-::tmux4::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'C-l'\; send-keys -t top-right 'C-l'\; send-keys -t bottom-left 'C-l'\; send-keys -t bottom-right 'C-l'\; select-pane -U\; send-keys 'C-l'\;
+::free %.::{Raw}MEM_TOTAL=$(free | grep 'Mem' | awk '{ print $2 }'); MEM_USED=$(free | grep 'Mem' | awk '{ print $3 }'); USED_PERCENT=$(bc <<< "scale=4; (${MEM_USED} / ${MEM_TOTAL}) * 100"); echo "Memory Used %: ${USED_PERCENT}"
+::free top10.::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
+::find top10.::{Raw}echo -e "\nTOP 10 LARGEST FILES:\n$(find / -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
+::du top10.::{Raw}echo -e "\nTOP 10 LARGEST DIRECTORIES:\n$(du --threshold=1M -sh $(ls -d /* | grep -Ev '(proc|sys|dev|run)' | tr '\n' ' ') | sort -hr)"
+::tmux4.::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'C-l'\; send-keys -t top-right 'C-l'\; send-keys -t bottom-left 'C-l'\; send-keys -t bottom-right 'C-l'\; select-pane -U\; send-keys 'C-l'\;
 
 ::watch ping.::
     SendInput, {Raw}watch -d -n15 "hostname; ping -c2 -w2 "
@@ -250,12 +252,12 @@ setxkbmap \
 
 ::sudo apt-get update &::{Raw}sudo apt-get update && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y
 
-::ssh rtunnel::
+::ssh rtunnel.::
     SendInput, {Raw}ssh remoteUser@remoteHost -R 21919:localhost:22
     SendInput, {Left 33}
     Return 
 
-::scp rtunnel::
+::scp rtunnel.::
     SendInput, {Raw}scp -P 21919 remotefile jeff@localhost:/tmp
     SendInput, {Left 20}
     Return 
