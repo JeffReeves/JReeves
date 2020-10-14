@@ -224,7 +224,8 @@ ButtonOK:
 ::free top10.::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
 ::find top10.::{Raw}echo -e "\nTOP 10 LARGEST FILES:\n$(find ./ -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
 ::du top10.::{Raw}echo -e "\nTOP 10 LARGEST DIRECTORIES:\n$(du --threshold=4M -Shx ./ | sort -hr | head -n10)"
-::tmux4.::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'C-l'\; send-keys -t top-right 'C-l'\; send-keys -t bottom-left 'C-l'\; send-keys -t bottom-right 'C-l'\; select-pane -U\; send-keys 'C-l'\;
+::tmux4.::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
+::tmux6.::{Raw}tmux -u new-session -s t620s \; split-window -v\; split-window -v\; split-window -h\; select-pane -U\; split-window -h\; select-pane -U\; split-window -h\; select-pane -L\; select-layout tiled\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
 ::watch ping.::
     SendInput, {Raw}watch -d -n15 "hostname; ping -c2 -w2 "
@@ -264,7 +265,8 @@ setxkbmap \
 
 ::rm zone.::{Raw}find /share -type f -name "*Zone.Identifier" -print0 | xargs -i{} -0 rm -v {}
 ::mkvtomp4.::{Raw}find ./ -maxdepth 1 -type f -name '*.mkv' -print0 | xargs -0 -I{} ffmpeg -i {} -codec copy $(echo "{}" | cut -f2 -d'.').mp4
-::tmuxrpis::{Raw}tmux -u new-session -s rpis \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
+::tmuxrpis.::{Raw}tmux -u new-session -s rpis \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
+::tmuxt620s.::{Raw}tmux -u new-session -s t620s \; split-window -v\; split-window -v\; split-window -h\; select-pane -U\; split-window -h\; select-pane -U\; split-window -h\; select-pane -L\; select-layout tiled\; send-keys -t 0 'ssh jeff@a-baby' 'C-m'\; send-keys -t 1 'ssh jeff@guy1' 'C-m'\; send-keys -t 2 'ssh jeff@guy2' 'C-m'\; send-keys -t 3 'ssh jeff@guy3' 'C-m'\; send-keys -t 4 'ssh jeff@guy4' 'C-m'\; send-keys -t 5 'ssh jeff@guy5' 'C-m'\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
 
 ; FOLDER CREATION --------------------------------------------------|
