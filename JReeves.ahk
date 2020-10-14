@@ -219,7 +219,7 @@ ButtonOK:
 ::~~69::{~}{~}--------------------------------------------------------------------{~}{~}
 
 ; Linux
-::date +::{Raw}date +%Y%b%d
+::date +::{Raw}date +%Y-%b-%d
 ::free %.::{Raw}MEM_TOTAL=$(free | grep 'Mem' | awk '{ print $2 }'); MEM_USED=$(free | grep 'Mem' | awk '{ print $3 }'); USED_PERCENT=$(bc <<< "scale=4; (${MEM_USED} / ${MEM_TOTAL}) * 100"); echo "Memory Used %: ${USED_PERCENT}"
 ::free top10.::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
 ::find top10.::{Raw}echo -e "\nTOP 10 LARGEST FILES:\n$(find ./ -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
