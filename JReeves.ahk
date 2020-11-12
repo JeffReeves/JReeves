@@ -299,3 +299,13 @@ setxkbmap \
 +Esc::
     Reload
     Return
+
+
+; VR CHAT ----------------------------------------------------------|
+
+; needed for Dvorak keyboard rebindings
+#IfWinActive ahk_exe VRChat.exe
+.::w
+o::a 
+e::s 
+u::d
