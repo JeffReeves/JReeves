@@ -263,6 +263,12 @@ setxkbmap \
     SendInput, {Left 20}
     Return 
 
+::youtubedl.::
+    SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+    SendInput,^a
+    SendInput,{Right 10}
+    Return 
+
 ::rm zone.::{Raw}find /share -type f -name "*Zone.Identifier" -print0 | xargs -i{} -0 rm -v {}
 ::mkvtomp4.::{Raw}find ./ -maxdepth 1 -type f -name '*.mkv' -print0 | xargs -0 -I{} ffmpeg -i {} -codec copy $(echo "{}" | cut -f2 -d'.').mp4
 ::mkvtomp4subs.::{Raw}find ./ -maxdepth 1 -type f -name '*.mkv' -print0 | xargs -0 -I{} ffmpeg -i {} -vf subtitles={} -codec copy $(echo "{}" | cut -f2 -d'.').mp4
