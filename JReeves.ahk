@@ -278,6 +278,12 @@ setxkbmap \
 ::tmuxloz.::{Raw}tmux -u new-session -s loz \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 ::tmuxsmb.::{Raw}tmux -u new-session -s smb \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@mushroom' 'C-m'\; send-keys -t top-right 'ssh jeff@mario' 'C-m'\; send-keys -t bottom-left 'ssh jeff@luigi' 'C-m'\; send-keys -t bottom-right 'ssh jeff@peach' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
+; RRTK
+::rrtk.::
+    SendInput, ^v 
+    SendInput, {Raw} = "" (RRTK)
+    SendInput,{Left 8}
+    Return 
 
 ; FOLDER CREATION --------------------------------------------------|
 
