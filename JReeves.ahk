@@ -291,9 +291,9 @@ setxkbmap \
 ; Copies the current line and formats it into:
 ; <italic_text> = <bold_text>
 AppsKey::
-    Random, red,   0, 180 ; 255
-    Random, blue,  0, 180 ; 255
-    Random, green, 0, 180 ; 255
+    Random, red,   0, 225 ; 255
+    Random, blue,  0, 225 ; 255
+    Random, green, 0, 225 ; 255
     randomHexColor := Format("{1:0.2X}{2:0.2X}{3:0.2X}`r`n", red, blue, green)
     randomHexColor := Trim(randomHexColor)
     SendInput, {End}
