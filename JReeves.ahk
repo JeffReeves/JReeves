@@ -120,7 +120,7 @@ F7::
     Return
 
 ; wrap selected text with desired HTML tags
-AppsKey:: 
++AppsKey:: 
     SendInput ^c
     Gui, Destroy
     Gui, Add, Text, w200, Wrap HTML:
@@ -286,7 +286,31 @@ setxkbmap \
     SendInput, ^v 
     SendInput, {Raw} = "" (RRTK)
     SendInput,{Left 8}
-    Return 
+    Return
+
+; Copies the current line and formats it into:
+; <italic_text> = <bold_text>
+AppsKey::
+    ; copy the current line of text
+    SendInput, {End}
+    SendInput, +{Home}
+    Sleep, 50
+    SendInput, ^c
+    ClipWait, 2
+    Sleep 100
+    line := clipboard
+    MsgBox, line: %line%
+    If InStr(line, "=")
+    {
+        story_array := StrSplit(line, "=")
+        SendInput, ^i
+        SendInput, % story_array[1]
+        SendInput, ^i{space}{=}{space}
+        SendInput, ^b
+        SendInput, % story_array[2]
+        SendInput, ^b
+    }
+    Return
 
 ; FOLDER CREATION --------------------------------------------------|
 
