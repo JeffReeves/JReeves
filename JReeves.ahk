@@ -291,7 +291,6 @@ setxkbmap \
 ; Copies the current line and formats it into:
 ; <italic_text> = <bold_text>
 AppsKey::
-    ; copy the current line of text
     SendInput, {End}
     SendInput, +{Home}
     Sleep, 50
@@ -302,11 +301,13 @@ AppsKey::
     If InStr(line, "=")
     {
         story_array := StrSplit(line, "=")
+        story := Trim(story_array[1])
+        keyword := Trim(story_array[2])
         SendInput, ^i
-        SendInput, % story_array[1]
+        SendInput, % story
         SendInput, ^i{space}{=}{space}
         SendInput, ^b
-        SendInput, % story_array[2]
+        SendInput, % keyword
         SendInput, ^b
     }
     Return
