@@ -291,6 +291,11 @@ setxkbmap \
 ; Copies the current line and formats it into:
 ; <italic_text> = <bold_text>
 AppsKey::
+    Random, red,   0, 180 ; 255
+    Random, blue,  0, 180 ; 255
+    Random, green, 0, 180 ; 255
+    randomHexColor := Format("{1:0.2X}{2:0.2X}{3:0.2X}`r`n", red, blue, green)
+    randomHexColor := Trim(randomHexColor)
     SendInput, {End}
     SendInput, +{Home}
     Sleep, 50
@@ -303,12 +308,10 @@ AppsKey::
         story_array := StrSplit(line, "=")
         story := Trim(story_array[1])
         keyword := Trim(story_array[2])
-        SendInput, ^i
-        SendInput, % story
-        SendInput, ^i{space}{=}{space}
-        SendInput, ^b
-        SendInput, % keyword
-        SendInput, ^b
+        htmlString := "<i>" story "</i> = <b><font color='#" randomHexColor "'>" keyword "</font></b>"
+        htmlString := StrReplace(htmlString, "`r`n", "")
+        wcMain.SetHTML(htmlString)
+        wcMain.Paste()
     }
     Return
 
