@@ -1,7 +1,4 @@
-﻿SetKeyDelay, 2, 2
-; 8 occurrances of SendInput were replaced with Send
-
-class WinClip extends WinClip_base
+﻿class WinClip extends WinClip_base
 {
   __New()
   {
@@ -299,9 +296,9 @@ class WinClip extends WinClip_base
     this.Snap( data )
     this.Clear()    ;clearing the clipboard
     if( method = 1 )
-      Send, ^{Ins}
+      SendInput, ^{Ins}
     else
-      Send, ^{vk43sc02E} ;ctrl+c
+      SendInput, ^{vk43sc02E} ;ctrl+c
     ClipWait,% timeout, 1
     if ( ret := this._isClipEmpty() )
       this.Restore( data )
@@ -314,9 +311,9 @@ class WinClip extends WinClip_base
     this.Snap( data )
     this.Clear()    ;clearing the clipboard
     if( method = 1 )
-      Send, ^{Ins}
+      SendInput, ^{Ins}
     else
-      Send, ^{vk43sc02E} ;ctrl+c
+      SendInput, ^{vk43sc02E} ;ctrl+c
     ClipWait,% timeout, 1
     bytesCopied := 0
     if !this._isClipEmpty()
@@ -338,9 +335,9 @@ class WinClip extends WinClip_base
       ret := this.SetText( plainText )
     }
     if( method = 1 )
-      Send, +{Ins}
+      SendInput, +{Ins}
     else
-      Send, ^{vk56sc02F} ;ctrl+v
+      SendInput, ^{vk56sc02F} ;ctrl+v
     this._waitClipReady( 3000 )
     if ( plainText != "" )
     {
@@ -358,9 +355,9 @@ class WinClip extends WinClip_base
     if !( bytesRestored := this.iRestore() )
       return 0
     if( method = 1 )
-      Send, +{Ins}
+      SendInput, +{Ins}
     else
-      Send, ^{vk56sc02F} ;ctrl+v
+      SendInput, ^{vk56sc02F} ;ctrl+v
     this._waitClipReady( 3000 )
     this.Restore( data )
     return bytesRestored
