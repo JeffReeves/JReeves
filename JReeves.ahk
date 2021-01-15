@@ -299,7 +299,6 @@ AppsKey::
     ClipWait, 2
     Sleep 100
     line := clipboard
-    MsgBox, line: %line%
     If InStr(line, "=")
     {
         story_array := StrSplit(line, "=")
