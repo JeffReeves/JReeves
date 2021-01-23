@@ -313,6 +313,24 @@ AppsKey::
         wcMain.SetHTML(htmlString)
         wcMain.Paste()
     }
+    Else If InStr(line, ":")
+    {
+        primitive_array := StrSplit(line, ":")
+        ;primitive := Trim(primitive_array[1])
+        keyword := Trim(primitive_array[2])
+        htmlString := "<u>primitive:</u> <b><font color='#" randomHexColor "'>" keyword "</font></b>"
+        htmlString := StrReplace(htmlString, "`r`n", "")
+        wcMain.SetHTML(htmlString)
+        wcMain.Paste()
+    }
+    Else
+    {
+        keyword := Trim(line)
+        htmlString := "<b><font color='#" randomHexColor "'>" keyword "</font></b>"
+        htmlString := StrReplace(htmlString, "`r`n", "")
+        wcMain.SetHTML(htmlString)
+        wcMain.Paste()
+    }
     Return
 
 ; FOLDER CREATION --------------------------------------------------|
