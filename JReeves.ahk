@@ -288,8 +288,17 @@ setxkbmap \
     SendInput,{Left 8}
     Return
 
+; RRTK
+::prim.::
+    SendInput, ^v 
+    SendInput, {Raw} : "" (primitive)
+    SendInput,{Left 13}
+    Return
+
 ; Copies the current line and formats it into:
 ; <italic_text> = <bold_text>
+; <underline_text>: <bold_text>
+; <bold_text>
 AppsKey::
     Random, red,   0, 225 ; 255
     Random, blue,  0, 225 ; 255
