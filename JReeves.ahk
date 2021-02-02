@@ -236,11 +236,29 @@ ButtonOK:
     Return
 
 ; loops
-::while loop file.::{Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done < /tmp/list.txt
-::while loop var.::{Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done <<< "${LIST}"
-::for loop.::
+::while loop file.::
+    SendInput, {Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done < /tmp/list.txt
+    SendInput, {Left 33}
+    Return
+
+::while loop var.::
+    SendInput, {Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done <<< "${LIST}"
+    SendInput, {Left 31}
+    Return 
+
+::for loop ssv.::
     SendInput, {Raw}ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done
     SendInput, {Left 51}
+    Return
+
+::for loop csv.::
+    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=,; ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
+    SendInput, {Left 75}
+    Return
+
+::for loop nsv.::
+    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=$'\n'; ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
+    SendInput, {Left 75}
     Return
 
 ; git 
