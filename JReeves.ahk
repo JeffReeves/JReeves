@@ -247,18 +247,18 @@ ButtonOK:
     Return 
 
 ::for loop ssv.::
-    SendInput, {Raw}ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done
-    SendInput, {Left 51}
+    SendInput, {Raw}LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done
+    SendInput, {Left 50}
     Return
 
 ::for loop csv.::
-    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=,; ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
-    SendInput, {Left 75}
+    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=,; LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
+    SendInput, {Left 74}
     Return
 
 ::for loop nsv.::
-    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=$'\n'; ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
-    SendInput, {Left 75}
+    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=$'\n'; LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
+    SendInput, {Left 74}
     Return
 
 ; git 
