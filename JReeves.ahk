@@ -252,7 +252,7 @@ ButtonOK:
     Return
 
 ::for loop csv.::
-    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=,; LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
+    SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=','; LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
     SendInput, {Left 74}
     Return
 
