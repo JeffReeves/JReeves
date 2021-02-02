@@ -225,7 +225,7 @@ ButtonOK:
 ::date +::{Raw}date +%Y-%b-%d
 ::free %.::{Raw}MEM_TOTAL=$(free | grep 'Mem' | awk '{ print $2 }'); MEM_USED=$(free | grep 'Mem' | awk '{ print $3 }'); USED_PERCENT=$(bc <<< "scale=4; (${MEM_USED} / ${MEM_TOTAL}) * 100"); echo "Memory Used %: ${USED_PERCENT}"
 ::free top10.::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
-::find top10.::{Raw}echo -e "\nTOP 10 LARGEST FILES:\n$(find ./ -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
+::du sort.::{Raw}du -ah --max-depth=1 | sort -hr
 ::du top10.::{Raw}echo -e "\nTOP 10 LARGEST DIRECTORIES:\n$(du --threshold=4M -Shx ./ | sort -hr | head -n10)"
 ::tmux4.::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 ::tmux6.::{Raw}tmux -u new-session -s t620s \; split-window -v\; split-window -v\; split-window -h\; select-pane -U\; split-window -h\; select-pane -U\; split-window -h\; select-pane -L\; select-layout tiled\; set-window-option synchronize-panes\; send-keys 'C-l'\;
@@ -233,6 +233,14 @@ ButtonOK:
 ::watch ping.::
     SendInput, {Raw}watch -d -n15 "hostname; ping -c2 -w2 "
     SendInput, {Left 1}
+    Return
+
+; loops
+::while loop file.::{Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done < /tmp/list.txt
+::while loop var.::{Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done <<< "${LIST}"
+::for loop.::
+    SendInput, {Raw}ITEMS=""; for ITEM in ${ITEMS}; do echo "hi ${ITEM}"; done
+    SendInput, {Left 51}
     Return
 
 ; git 
