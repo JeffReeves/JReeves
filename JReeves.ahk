@@ -48,6 +48,10 @@ Break::
     SendInput, %fulltarget%
     Return
 
++Break::
+    SendInput, %halftarget%
+    Return
+
 ScrollLock::
     SendInput, %semitarget%
     Return

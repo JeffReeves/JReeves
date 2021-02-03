@@ -1,2 +1,3 @@
-semitarget = password1
-fulltarget = password2
+semitarget = string1
+fulltarget = string2
+halftarget = string3
