@@ -398,10 +398,6 @@ Return
 
 ; STEAM ACHIEVEMENT MANAGER ----------------------------------------|
 #s::
-    ; double click on the icon
-    ;MouseClick, left,,, 2
-    ;Sleep 1000
-
     ; 85X, 100Y
     MouseClick, left, 85, 100
     Sleep 200
@@ -412,6 +408,10 @@ Return
 
     ; Enter
     SendInput, {Enter}
+    Sleep 500
+
+    ; Close Window
+    WinClose, A
     Return
 
 ; RELOAD -----------------------------------------------------------|
