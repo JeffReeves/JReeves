@@ -394,8 +394,25 @@ AppsKey::
         SendInput, {Enter}
         Sleep 20
     }
-    Return
+Return
 
+; STEAM ACHIEVEMENT MANAGER ----------------------------------------|
+#s::
+    ; double click on the icon
+    ;MouseClick, left,,, 2
+    ;Sleep 1000
+
+    ; 85X, 100Y
+    MouseClick, left, 85, 100
+    Sleep 200
+
+    ; 580X, 45Y
+    MouseClick, left, 580, 45
+    Sleep 200
+
+    ; Enter
+    SendInput, {Enter}
+    Return
 
 ; RELOAD -----------------------------------------------------------|
 
