@@ -296,7 +296,7 @@ setxkbmap \
     SendInput, {Left 20}
     Return 
 
-::youtubedl.::
+::youtube-dl.::
     SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
     SendInput,^a
     SendInput,{Right 10}
@@ -408,7 +408,7 @@ Return
 
     ; Enter
     SendInput, {Enter}
-    Sleep 500
+    Sleep 1000
 
     ; Close Window
     WinClose, A
