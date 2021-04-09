@@ -297,7 +297,7 @@ setxkbmap \
     Return 
 
 ::youtube-dl.::
-    SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+    SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --write-all-thumbnails
     SendInput,^a
     SendInput,{Right 10}
     Return 
