@@ -321,6 +321,56 @@ setxkbmap \
 ::tmuxloz.::{Raw}tmux -u new-session -s loz \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 ::tmuxsmb.::{Raw}tmux -u new-session -s smb \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@mushroom' 'C-m'\; send-keys -t top-right 'ssh jeff@mario' 'C-m'\; send-keys -t bottom-left 'ssh jeff@luigi' 'C-m'\; send-keys -t bottom-right 'ssh jeff@peach' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
+; OpenStack
+::neutron list networks.::{Raw}neutron net-list | grep -v '+' | sort -k4 -V
+::neutron show mac.::{Raw}neutron port-list | grep ${IP}
+::nova list aggregates.::{Raw}AGGREGATE_LIST=$(openstack aggregate list -f value -c "Name" -c "Availability Zone"); echo -e "#==[ AGGREGATE LIST ]=====\n$(openstack aggregate list)\n"; for AGGREGATE in $(echo "${AGGREGATE_LIST}" | cut -d' ' -f1); do echo "#--[ AGGREGATE SHOW ${AGGREGATE} ]-----"; openstack aggregate show -f value -c hosts "${AGGREGATE}" | grep -Po "(?<=')[a-zA-Z0-9\-\.]+(?=')"; echo ""; done
+::nova list.::{Raw}nova list --all | sort -k4 -V 
+::nova list vm.::{Raw}nova list --all --fields name,instance_name,host,status,power_state,task_state,networks --name 
+::nova list host.::{Raw}nova list --all --fields name,instance_name,host,status,power_state,task_state,networks --host 
+
+::nova list flavors.::
+    SendInput, {Raw}nova list --fields name,instance_name --all --host  | grep -vE 'Instance Name|\+' | grep -Eo '[0-9a-f]{8}(\-[0-9a-f]{4}){3}\-[0-9a-f]{12}' | xargs -I{} nova show {} | grep -E '\| flavor|\| name|\| instance' | awk '{ print $2"\t"$4 }'
+    SendInput, {Left 182}
+    Return
+
+::nova list migrations host.::
+    SendInput, {Raw}nova migration-list --host  | grep $(date +%Y-%m-%d%)
+    SendInput, {Left 26}
+    Return
+
+::nova show aggregate host.::
+    SendInput, {Raw}HOST=''; echo -e "\nHOST: ${HOST}"; AGGREGATE_FOUND=0; AGGREGATE_LIST=$(openstack aggregate list -f value -c "Name" -c "Availability Zone"); for AGGREGATE in $(echo "${AGGREGATE_LIST}" | cut -d' ' -f1); do AGGREGATE_HOSTS=$(openstack aggregate show -f value -c hosts "${AGGREGATE}" | grep -Po "(?<=')[a-zA-Z0-9\-\.]+(?=')"); for AGGREGATE_HOST in ${AGGREGATE_HOSTS}; do if [[ "${AGGREGATE_HOST}" == "${HOST}" ]]; then echo -e "AGGREGATE: ${AGGREGATE}\n\nOther hosts in this aggregate:\n${AGGREGATE_HOSTS}\n"; NOVA_SERVICE_LIST=$(nova service-list | sort -k4 -V); for ITEM in ${LIST}; do echo "${NOVA_SERVICE_LIST}" | grep -i "${ITEM}"; done; AGGREGATE_FOUND=1; break; fi; done; done; if [ ${AGGREGATE_FOUND} -eq 0 ]; then echo "[ERROR] NO AGGREGATE FOUND FOR HOST"; fi
+    SendInput, ^a 
+    SendInput, {Right 6}
+    Return
+
+::nova show flavor.::
+    SendInput, {Raw}nova show  | grep flavor
+    SendInput, {Left 14}
+    Return
+
+::nova show uuid.::
+    SendInput, {Raw}nova list --all --name  | grep -Eo '[0-9a-f]{8}(\-[0-9a-f]{4}){3}\-[0-9a-f]{12}'
+    SendInput, {Left 14}
+    Return
+
+::nova show volumes.::
+    SendInput, {Raw}nova show  | grep volume
+    SendInput, {Left 14}
+    Return
+
+::nova service disable.::
+    SendInput, {Raw}nova service-disable --reason "$(date +%Y-%b-%d) - Jeff R"  nova-compute
+    SendInput, {Left 13}
+    Return
+
+::nova service enable.::
+    SendInput, {Raw}nova service-enable  nova-compute
+    SendInput, {Left 13}
+    Return
+
+::watch stack list.::{Raw}watch -d -n15 'echo "[OPENSTACK STACK LIST]"; STACK_LIST=$(openstack stack list --nested -f "value" -c "Stack Name" -c "Stack Status" -c "Updated Time" | grep -v "COMPL"); echo "${STACK_LIST}"; echo -e "\n[OPENSTACK STACK RESOURCE LIST]"; RESOURCE_NAME=$(echo "${STACK_LIST}" | grep -i "update_in_progress" | head -n1 | awk '\''{ print $1 }'\''); openstack stack resource list "${RESOURCE_NAME}"'
 
 ; RRTK
 ; Copies the current line and formats it into:
