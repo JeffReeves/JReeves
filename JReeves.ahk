@@ -225,21 +225,31 @@ ButtonOK:
 ; Discord
 ::~~69::{~}{~}--------------------------------------------------------------------{~}{~}
 
-; Linux
+; Linux - General
 ::date +::{Raw}date +%Y-%b-%d
 ::free %.::{Raw}MEM_TOTAL=$(free | grep 'Mem' | awk '{ print $2 }'); MEM_USED=$(free | grep 'Mem' | awk '{ print $3 }'); USED_PERCENT=$(bc <<< "scale=4; (${MEM_USED} / ${MEM_TOTAL}) * 100"); echo "Memory Used %: ${USED_PERCENT}"
 ::free top10.::{Raw}echo -e "\nTOP 10 PROCESSES USING MEMORY:\n$(ps aux --sort -rss --width 130 | head)"
+::dd wipe mbr.::{Raw}echo 'Wiping MBR...' && sudo dd bs=512 count=1 if=/dev/zero of=/dev/
+::df sort.::{Raw}df -h | grep -E '^/' | sort -hr -k4
 ::du sort.::{Raw}du -ah --max-depth=1 | sort -hr
 ::du top10.::{Raw}echo -e "\nTOP 10 LARGEST DIRECTORIES:\n$(du --threshold=4M -Shx ./ | sort -hr | head -n10)"
+::find top10.::{Raw}echo -e "\nTOP 10 LARGEST FILES:\n$(find / -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
+::grep guid.::{Raw}grep -Eo '[0-9a-f]{8}(\-[0-9a-f]{4}){3}\-[0-9a-f]{12}'
+::iptables ping disable::{Raw}iptables -I INPUT -p icmp -j DROP && echo "Disabled ICMP"
+::iptables ping enable::{Raw}iptables -D INPUT -p icmp -j DROP && echo "Enabled ICMP"
+::ps memory.::{Raw}ps -o pid,user,%mem,command ax | sort -b -k3 -r
 ::tmux4.::{Raw}tmux -u new-session -s quad \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 ::tmux6.::{Raw}tmux -u new-session -s t620s \; split-window -v\; split-window -v\; split-window -h\; select-pane -U\; split-window -h\; select-pane -U\; split-window -h\; select-pane -L\; select-layout tiled\; set-window-option synchronize-panes\; send-keys 'C-l'\;
+
+::watch date.::
+    SendInput, {Raw}watch -d -n60 "hostname; date"
+    Return
 
 ::watch ping.::
     SendInput, {Raw}watch -d -n15 "hostname; ping -c2 -w2 "
     SendInput, {Left 1}
     Return
 
-; loops
 ::while loop file.::
     SendInput, {Raw}while IFS='' read -r ITEM || [ -N "${ITEM}" ]; do echo "hi ${ITEM}"; done < /tmp/list.txt
     SendInput, {Left 33}
@@ -250,14 +260,14 @@ ButtonOK:
     SendInput, {Left 31}
     Return 
 
-::for loop ssv.::
-    SendInput, {Raw}LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done
-    SendInput, {Left 50}
-    Return
-
 ::for loop csv.::
     SendInput, {Raw}FIELD_SEPARATOR=$IFS; IFS=','; LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done; IFS=${FIELD_SEPARATOR}
     SendInput, {Left 74}
+    Return
+
+::for loop ssv.::
+    SendInput, {Raw}LIST=""; for ITEM in ${LIST}; do echo "hi ${ITEM}"; done
+    SendInput, {Left 50}
     Return
 
 ::for loop nsv.::
@@ -311,20 +321,8 @@ setxkbmap \
 ::tmuxloz.::{Raw}tmux -u new-session -s loz \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@triforce' 'C-m'\; send-keys -t top-right 'ssh jeff@link' 'C-m'\; send-keys -t bottom-left 'ssh jeff@zelda' 'C-m'\; send-keys -t bottom-right 'ssh jeff@ganon' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 ::tmuxsmb.::{Raw}tmux -u new-session -s smb \; split-window -h\; split-window -v\; select-pane -L\; split-window -v\; send-keys -t top-left 'ssh jeff@mushroom' 'C-m'\; send-keys -t top-right 'ssh jeff@mario' 'C-m'\; send-keys -t bottom-left 'ssh jeff@luigi' 'C-m'\; send-keys -t bottom-right 'ssh jeff@peach' 'C-m'\; select-pane -U\; set-window-option synchronize-panes\; send-keys 'C-l'\;
 
-; RRTK
-::rrtk.::
-    SendInput, ^v 
-    SendInput, {Raw} = "" (RRTK)
-    SendInput,{Left 8}
-    Return
 
 ; RRTK
-::prim.::
-    SendInput, ^v 
-    SendInput, {Raw} : "" (primitive)
-    SendInput,{Left 13}
-    Return
-
 ; Copies the current line and formats it into:
 ; <italic_text> = <bold_text>
 ; <underline_text>: <bold_text>
