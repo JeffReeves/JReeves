@@ -335,7 +335,7 @@ setxkbmap \
     Return
 
 ::nova list migrations host.::
-    SendInput, {Raw}nova migration-list --host  | grep $(date +%Y-%m-%d%)
+    SendInput, {Raw}nova migration-list --host  | grep "$(date +`%Y-`%m-`%d`)"
     SendInput, {Left 26}
     Return
 
@@ -361,7 +361,7 @@ setxkbmap \
     Return
 
 ::nova service disable.::
-    SendInput, {Raw}nova service-disable --reason "$(date +%Y-%b-%d) - Jeff R"  nova-compute
+    SendInput, {Raw}nova service-disable --reason "$(date +`%Y-`%b-`%d) - Jeff R"  nova-compute
     SendInput, {Left 13}
     Return
 
