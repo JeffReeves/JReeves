@@ -307,7 +307,13 @@ setxkbmap \
     Return 
 
 ::youtube-dl.::
-    SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --write-all-thumbnails
+    SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --write-thumbnail
+    SendInput,^a
+    SendInput,{Right 10}
+    Return 
+
+::youtube-dl-thumbs.::
+    SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --skip-download --write-thumbnail
     SendInput,^a
     SendInput,{Right 10}
     Return 
@@ -460,6 +466,16 @@ Return
 
     ; Close Window
     WinClose, A
+    Return
+
+; HEADSPACE LOGIN --------------------------------------------------|
+
++PrintScreen::
+    SendInput, pip uninstall pyheadspace -y; python setup.py build; python setup.py install; headspace login{Enter} 
+    sleep 2000
+    SendInput, jeff{@}binary.run{Enter}
+    sleep 150
+    SendInput, {#}15MinutesADay{!}
     Return
 
 ; RELOAD -----------------------------------------------------------|
