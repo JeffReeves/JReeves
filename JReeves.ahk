@@ -484,6 +484,11 @@ Return
     Reload
     Return
 
+; JAPANESE WINDOWS IME ---------------------------------------------|
+
+; switch between hiragana and katakana
+#Space::vk1D
+
 
 ; VR CHAT ----------------------------------------------------------|
 
