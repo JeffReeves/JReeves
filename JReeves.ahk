@@ -277,7 +277,7 @@ ButtonOK:
 
 ; git 
 ::git log --::{Raw}git log --graph --all --decorate
-::git push --all::{Raw}git push origin; git push github; git push gitlab;
+::git push --all::{Raw}GIT_REMOTES=$(git remote -v | grep 'push' | awk '{print $1}'); for REMOTE in ${GIT_REMOTES}; do echo "#==[ ${REMOTE} ]====="; git push "${REMOTE}"; echo ''; done
 
 
 ; homelab Linux
