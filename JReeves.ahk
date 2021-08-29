@@ -277,6 +277,8 @@ ButtonOK:
 
 ; git 
 ::git log --::{Raw}git log --graph --all --decorate
+::git push --all::{Raw}git push origin; git push github; git push gitlab;
+
 
 ; homelab Linux
 ::add dvorak toggle.::
