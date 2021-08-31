@@ -232,8 +232,9 @@ ButtonOK:
 ::dd wipe mbr.::{Raw}echo 'Wiping MBR...' && sudo dd bs=512 count=1 if=/dev/zero of=/dev/
 ::df sort.::{Raw}df -h | grep -E '^/' | sort -hr -k4
 ::du sort.::{Raw}du -ah --max-depth=1 | sort -hr
-::du top10.::{Raw}echo -e "\nTOP 10 LARGEST DIRECTORIES:\n$(du --threshold=4M -Shx ./ | sort -hr | head -n10)"
-::find top10.::{Raw}echo -e "\nTOP 10 LARGEST FILES:\n$(find / -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
+::du top10.::{Raw}echo -e "\nTOP 10 LARGEST DIRECTORIES IN $(pwd):\n$(du --threshold=4M -Shx $(pwd) | sort -hr | head -n10)"
+::find top10 size.::{Raw}echo -e "\nTOP 10 LARGEST FILES IN /:\n$(find / -mount -size +2M -exec ls -alsh {} + | sort -rh -k1 | head -n10)"
+::find top10 modified.::{Raw}echo -e "\n10 MOST RECENTLY MODIFIED FILES IN $(pwd):\n$(find $(pwd) -type f -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | head -n10)"
 ::grep guid.::{Raw}grep -Eo '[0-9a-f]{8}(\-[0-9a-f]{4}){3}\-[0-9a-f]{12}'
 ::iptables ping disable::{Raw}iptables -I INPUT -p icmp -j DROP && echo "Disabled ICMP"
 ::iptables ping enable::{Raw}iptables -D INPUT -p icmp -j DROP && echo "Enabled ICMP"
