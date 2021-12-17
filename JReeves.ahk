@@ -280,7 +280,6 @@ ButtonOK:
 ::git log --::{Raw}git log --graph --all --decorate
 ::git push --all::{Raw}GIT_REMOTES=$(git remote -v | grep 'push' | awk '{print $1}'); for REMOTE in ${GIT_REMOTES}; do echo "#==[ ${REMOTE} ]====="; git push "${REMOTE}"; echo ''; done
 
-
 ; homelab Linux
 ::add dvorak toggle.::
 DVORAK_TOGGLE =
@@ -317,6 +316,18 @@ setxkbmap \
 
 ::youtube-dl-thumbs.::
     SendInput,{Raw}VIDEO_ID=''; youtube-dl -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --skip-download --write-thumbnail
+    SendInput,^a
+    SendInput,{Right 10}
+    Return 
+
+::yt-dlp.::
+    SendInput,{Raw}VIDEO_ID=''; yt-dlp -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --restrict-filenames -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --write-thumbnail
+    SendInput,^a
+    SendInput,{Right 10}
+    Return 
+
+::yt-dlp-thumbs.::
+    SendInput,{Raw}VIDEO_ID=''; yt-dlp -o '`%(title)s.`%(ext)s' "${VIDEO_ID}" --skip-download --write-thumbnail
     SendInput,^a
     SendInput,{Right 10}
     Return 
