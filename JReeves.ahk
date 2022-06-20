@@ -207,6 +207,29 @@ ButtonOK:
     Return
 
 
+; MOUSE MOVE -------------------------------------------------------|
+
+toggleMouseMove := false 
+
++Break::SetTimer, MouseMove, % ((toggleMouseMove := !toggleMouseMove) ? "0" : "Off")
+    Return
+
+MouseMove:
+    ; get mouse position
+    MouseGetPos, MouseX, MouseY
+    positionToggle := !positionToggle
+    ; toggle current position left or right
+    if (positionToggle) {
+        NewMouseX := MouseX - 100
+    }
+    else {
+        NewMouseX := MouseX + 100
+    }
+    MouseMove, NewMouseX, MouseY, 2
+    Sleep 300000
+    ;MsgBox, MouseY: %MouseY% / NewMouseX: %NewMouseX%
+    Return
+
 ; HOT STRINGS ------------------------------------------------------|
 
 #Include HTML5.ahk ; autocompletion of HTML tags
