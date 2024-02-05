@@ -233,11 +233,58 @@ MouseMove:
 
 #Hotstring B * ?0 C1 C
 
+; M-Dash
 ::--m ::{Asc 0151}{space}
-::#=140::{#}==========================================================================================================================================
-::#=120::{#}======================================================================================================================
-::#=100::{#}==================================================================================================
-::#=80::{#}==============================================================================
+
+; section separators
+::#-140::{#}------------------------------------------------------------------------------------------------------------------------------------------
+::#-120::{#}----------------------------------------------------------------------------------------------------------------------
+::#-100::{#}--------------------------------------------------------------------------------------------------
+::#-80::{#}------------------------------------------------------------------------------
+
+; Build GUI
+BuildGUI:
+    Gui, Destroy
+    Gui, Add, Text, w200, Section Title:
+    Gui, Add, Edit, w300 vSectionTitle
+    Gui, Add, Button, w75 Default, OK2
+    MouseGetPos, MouseX, MouseY
+    Gui, Show, x%MouseX% y%MouseY% w320 h90, Section Title
+    Return
+
+; put text within separator and truncate length to 140 characters
+::#=140::
+    SeparatorLength = 132 ; 139 - 7 default
+    Gosub, BuildGUI
+    Return
+
+::#=120::
+    SeparatorLength = 112 ; 119 - 7 default
+    Gosub, BuildGUI
+    Return
+
+::#=100::
+    SeparatorLength = 92 ; 99 - 7 default
+    Gosub, BuildGUI
+    Return
+
+::#=80::
+    SeparatorLength = 72 ; 79 - 7 default
+    Gosub, BuildGUI
+    Return
+
+ButtonOK2:
+    Gui, Submit
+    TitleLength := StrLen(SectionTitle)
+    ;MsgBox,, Separator Length, SeparatorLength: %SeparatorLength% - %TitleLength%, 500
+    SeparatorLength := SeparatorLength - TitleLength
+    ;MsgBox,, Separator Length After, SeparatorLength: %SeparatorLength%, 500
+    SendInput, {#}==[ %SectionTitle% ]{= %SeparatorLength%}
+    SectionTitle =
+    SeparatorLength = 7 ; defaults
+    Sleep 100
+    SendInput, {Enter} ; go to start of line
+    return
 
 ; emoticons / emojis 
 ::.shrug.::¯\_(`ツ`)_/¯
